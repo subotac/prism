@@ -21000,13 +21000,15 @@ parse_expression_prefix(pm_parser_t *parser, pm_binding_power_t binding_power, u
             return parse_multi_target(parser, UP(pm_instance_variable_read_node_create(parser, &parser->previous)), binding_power, depth);
         case PM_TOKEN_INTEGER: {
             pm_node_flags_t base = parser->integer.base;
+            pm_node_t *node = UP(pm_integer_node_create(parser, base, &parser->current));
             parser_lex(parser);
-            return UP(pm_integer_node_create(parser, base, &parser->previous));
+            return node;
         }
         case PM_TOKEN_INTEGER_IMAGINARY: {
             pm_node_flags_t base = parser->integer.base;
+            pm_node_t *node = UP(pm_integer_node_imaginary_create(parser, base, &parser->current));
             parser_lex(parser);
-            return UP(pm_integer_node_imaginary_create(parser, base, &parser->previous));
+            return node;
         }
         case PM_TOKEN_INTEGER_RATIONAL: {
             pm_node_flags_t base = parser->integer.base;

@@ -28,5 +28,25 @@ module Prism
       assert_equal 0xFFri, Prism.parse_statement("0xFFri").value
       assert_equal 0xFFri, Prism.parse_statement("0xF_Fri").value
     end
+
+    def test_integer_values_after_syntax_errors
+      {
+        "1 2 3" => [1, 2, 3],
+        "0 1 2" => [0, 1, 2],
+        "1 22_2 333" => [1, 222, 333],
+        "1 4294967296 2" => [1, 4294967296, 2]
+      }.each do |source, expected|
+        assert_equal expected, Prism.parse(source).value.statements.body.map(&:value), source
+      end
+    end
+
+    def test_imaginary_values_after_syntax_errors
+      {
+        "1i 2i 3i" => [1i, 2i, 3i],
+        "1i 0x2i 3i" => [1i, 2i, 3i]
+      }.each do |source, expected|
+        assert_equal expected, Prism.parse(source).value.statements.body.map(&:value), source
+      end
+    end
   end
 end
