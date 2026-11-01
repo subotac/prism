@@ -52,7 +52,7 @@ module Prism # :nodoc:
     # given functions. For each one, define a function with the same name and
     # signature as the C function.
     def self.load_exported_functions_from(header, *functions, callbacks)
-      File.foreach("#{INCLUDE_DIR}/#{header}") do |line|
+      File.foreach("#{INCLUDE_DIR}/#{header}", chomp: true) do |line|
         # We only want to attempt to load exported functions.
         next unless line.include?("PRISM_EXPORTED_FUNCTION ")
 
